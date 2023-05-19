@@ -1,0 +1,33 @@
+1) To create docker image from DockerFile
+
+"docker build  -t myasterisk:0.1 . "
+
+
+2) To check image is created 
+
+"docker images"
+
+
+3) To creaet container from docker file 
+
+"docker run -it --net=host myasterisk:0.1 bash"
+
+4) To check the created container
+
+"docker ps -a"
+
+5) To Start the stoped container
+
+Container will be in the state of exited when the terminal is closed 
+
+
+6) To start the container
+
+"docker start xxxxxxxxx"
+where the xxxxx will be the 12 digit number from docker ps -a command
+
+7) To attach with the started container
+"docker attach xxxxxxxx"
+where the xxxxx will be the 12 digit number from docker ps -a command
+
+
