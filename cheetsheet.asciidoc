@@ -31,3 +31,14 @@ where the xxxxx will be the 12 digit number from docker ps -a command
 where the xxxxx will be the 12 digit number from docker ps -a command
 
 
+
+
+=== issue faced when starting the asterisk docker image ===
+
+__commands__:
+   * docker container start **_id_**
+   * docker exec -it _id_
+
+=== start the asterisk console ===
+
+asterisk -cvvvvvvvvvvvvvvv

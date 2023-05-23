@@ -36,13 +36,12 @@
 	sudo apt-get install binutils-gold  -y
 	sudo apt-get install libgl-dev  -y
 	sudo apt-get install libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0 -y
-        sudo apt-get install ffmpeg libav-tools 
+    sudo apt-get install ffmpeg libav-tools 
 	sudo  apt-get install -y  ffmpeg  libopenhpi-dev h264enc    libv4lconvert0 libv4l2rds0 libv4l-dev libv4l-0 ffmpeg libavcodec-dev libavcodec-extra libavcodec-extra58 libavcodec58 libavdevice-dev libavdevice58 libavfilter-dev libavfilter-extra7 libavformat-dev libavformat58  libavutil-dev libavresample-dev libavresample4 libavutil56 libswscale-dev libswscale5 gstreamer1.0-qt5 libportaudio2 portaudio19-dev libspeex-dev asterisk-opus libssl-dev libopencore-amrwb0 libopencore-amrwb-dev libsrtp2-dev libsrtp2-1 gstreamer1.0-vaapi libgraphics-color-perl v4l-utils gem-plugin-v4l2 libwebcam0 libwebcam0-dev
 	sudo apt-get install -y libsdl2-2.0-0 libsdl2-dev libsdl2-gfx-1.0-0  libsdl2-net-2.0-0 r-cran-openssl libcrypto++-dev
 	sudo apt-get --fix-broken install -y
 	sudo apt-get install -y libncurses-dev  libavcodec-dev libswcale-dev openssl  libopencore-amrwb-dev libopencore-amrwb0 libqtavwidgets1 libqtav1  octave-video baresip-ffmpeg baresip-gstreamer qt5-default
-sudo /sbin/ldconfig -v
-# --enable-shared  --with-openh264= CFLAGS=-I~/Desktop/openh264/usr/local/include/wels LDFLAGS=-L~/Desktop/openh264/usr/local/lib
+	sudo /sbin/ldconfig -v
 	 ./configure  --enable-shared --with-external-pa= CFLAGS=-I~/Desktop/usr/local/include/  CDFLAGS=-L~/Desktop/usr/local/lib/  --with-openh264= ~/Desktop/openh264
 	make dep 
 	make lib 
