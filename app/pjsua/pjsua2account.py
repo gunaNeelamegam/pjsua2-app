@@ -2,6 +2,8 @@ import pjsua2 as pj
 from pjsua.pjsua2call import Pjsua2Call
 from kivy.logger import Logger
 import time
+
+
 class Pjsua2Account(pj.Account):
 
     """
@@ -16,13 +18,20 @@ class Pjsua2Account(pj.Account):
         using Static member's (or) using class Variable
     """
 
-    incoming_call = None
+    incoming_call: Pjsua2Call = None
 
     def __init__(self, callback=lambda: print("Inside Pjsua2Account .......")):
         pj.Account.__init__(self)
         self.callback = callback
 
-    def onRegState(self, prm: pj.OnRegStateParam):
+    async def onRegState(self, prm: pj.OnRegStateParam):
+        """
+        Note:
+            registration code(int): success 200
+            registration statusCode(int): OK
+        Args:
+
+        """
         Logger.info("======== Account Registration ======== ")
         Logger.info(f"Registration Code ::  \t {prm.code}")
         Logger.info(f"Registration Status :: \t  {prm.status}")
@@ -36,17 +45,16 @@ class Pjsua2Account(pj.Account):
             Registaration Whole Message \t ::  {rData.wholeMsg}
             """
         )
-        Logger.info("=" * 20)
+        Logger.info("*" * 50)
 
     def onIncomingCall(self, prm: pj.OnIncomingCallParam):
         self.current_call: pj.Call = Pjsua2Call(self, prm.callId)
         current_call_info: pj.CallInfo = self.current_call.getInfo()
+        Pjsua2Account.incoming_call = self.current_call
         Logger.info(f" {'='*10} :: Incoming Call {'='*10}")
         print(
             f"""
            Current Call Id :: \t {current_call_info.id} 
-           Current Call Connection Duration :: \t  {current_call_info.connectDuration}
-            
               """
         )
         call_prm: pj.CallOpParam = pj.CallOpParam(True)
@@ -66,11 +74,22 @@ class Pjsua2Account(pj.Account):
 
     def onInstantMessageStatus(self, prm: pj.OnInstantMessageStatusParam):
         print("Instant Message Status:", prm)
-        # Handle instant message status event
 
     def onTypingIndication(self, prm: pj.OnTypingIndicationParam):
-        print("Typing Indication:", prm)
-        # Handle typing indication event
+        print("Typing Indication:", prm.isTyping)
+        print("======== Incoming pager ======== ")
+        print("From     : " + prm.fromUri)
+        print("To       : " + prm.toUri)
+        print("R Data :: ", prm.rdata, type(prm.rdata))
+        print("Contact Uri     : " + prm.contactUri)
+        rData: pj.SipRxData = prm.rdata
+        Logger.info(
+            f""" 
+            Registration srcAddress :: \t {rData.srcAddress} 
+            Registration Info :: \t {rData.info} 
+            Registaration Whole Message \t ::  {rData.wholeMsg}
+            """
+        )
 
     def onCallMediaTransportState(self, prm: pj.OnCallMediaTransportStateParam):
         print("Call Media Transport State:", prm)
@@ -105,6 +124,4 @@ class Pjsua2Account(pj.Account):
         except Exception as e:
             Logger.error(e.args)
 
-    def onCallMediaState(self, prm: pj.OnCallMediaStateParam):
-        print("Call Media State:", prm)
-        # Handle call media state event
+   

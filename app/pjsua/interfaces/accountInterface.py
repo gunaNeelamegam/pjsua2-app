@@ -4,6 +4,7 @@ from pjsua.pjsua2account import Pjsua2Account
 from kivy.logger import Logger
 from utils.config import load_to_instance
 
+
 class AccountUtility:
     """
     AccountUtlity Class consist of all the pjsuaAccount Utility function from Pjsua2.
@@ -14,7 +15,7 @@ class AccountUtility:
         As of now we load all the default settings from yaml file as config.yaml inside config directory.
         """
 
-        load_to_instance("config.yaml",self)
+        load_to_instance("config.yaml", self)
         self.account: pj.Account = Pjsua2Account()
 
     def create_account_config(self, *args, **kwargs):

@@ -1,6 +1,5 @@
 import pjsua2 as pj
 from pjsua.pjsua2endpoint import Pjsua2Endpoint
-from pjsua.pjsua2call import Pjsua2Call
 from kivy.logger import Logger
 from utils.config import load_to_instance
 

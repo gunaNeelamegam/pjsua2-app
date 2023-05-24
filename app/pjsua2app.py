@@ -1,7 +1,7 @@
 from kivy.app import App
 from threading import Thread
 from pjsua import pjsua2controller
-from kivy.logger import Logger
+from pjsua2 import Endpoint
 
 
 class MyApp(App):
@@ -28,6 +28,10 @@ class MyApp(App):
         self.pjsua2_thread.join()
 
     @classmethod
-    def set_class_endpoint(cls, cls_end):
+    def set_class_endpoint(cls, cls_end) -> None:
         cls.cls_endpoint = cls_end
         print(f"{cls.cls_endpoint=}")
+        return None
+
+    def get_endpoint(self) -> Endpoint:
+        return self.pjsua2_app.ep_util.ep

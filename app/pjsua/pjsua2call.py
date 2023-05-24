@@ -1,8 +1,7 @@
-from importlib import reload
+import pjsua2app
 import pjsua2 as pj
 from kivy.logger import Logger
 import time
-import pjsua2app
 
 
 def print_pad(message, *, prefix="="):
@@ -18,18 +17,14 @@ class Pjsua2Call(pj.Call):
     Call Class
     """
 
-    Current_Call = None
-    PjAudioMedia: pj.AudioMedia = None
-    PjMediaPreview: pj.VideoPreview = None
-    PjVideoWindow: pj.VideoWindow = None
-    PjVideoPreview: pj.VideoPreview = None
-
     def __init__(self, acc: pj.Account, call_id: int = ...):
         super(Pjsua2Call, self).__init__(acc, call_id)
         self.local_video = None
         self.remote_video = None
         self.start_time = time.time()
         self.end_time = None
+        self.video_window = None
+        self.video_prev = None
 
     def onCallState(self, prm: pj.OnCallStateParam):
         try:
@@ -49,6 +44,7 @@ class Pjsua2Call(pj.Call):
                 Logger.info(
                     f"Call ID: {call_id}, Duration: {duration} seconds {duration/60}"
                 )
+
             Logger.info(
                 f"""
                        Call State :: \t {callinfo.state}
@@ -56,6 +52,7 @@ class Pjsua2Call(pj.Call):
                        Call Info  :: \t  {callinfo.remVideoCount}
                         """
             )
+
             Logger.info("=" * 50)
         except CallException as e:
             Logger.error(e.args)
@@ -77,36 +74,32 @@ class Pjsua2Call(pj.Call):
             media_index = media_info.index
             media_type = media_info.type
             active = media_info.status == pj.PJSUA_CALL_MEDIA_ACTIVE
-
             if media_type == pj.PJMEDIA_TYPE_AUDIO and active:
                 try:
-                    audio_media: pj.AudioMedia = self.getAudioMedia(med_idx=media_index)
-                    audio_media_manager: pj.AudDevManager = (
+                    self.audio_media: pj.AudioMedia = self.getAudioMedia(
+                        med_idx=media_index
+                    )
+                    self.audio_media_manager: pj.AudDevManager = (
                         pjsua2app.MyApp.cls_endpoint.audDevManager()
                     )
 
-                    audio_media_manager.getCaptureDevMedia().startTransmit(audio_media)
+                    self.audio_media_manager.getCaptureDevMedia().startTransmit(
+                        self.audio_media
+                    )
 
-                    audio_media.startTransmit(
+                    self.audio_media.startTransmit(
                         pjsua2app.MyApp.cls_endpoint.audDevManager().getPlaybackDevMedia()
                     )
                 except Exception as e:
                     Logger.error(e.args)
-            elif (
-                media_type == pj.PJMEDIA_TYPE_VIDEO
-                and active
-                and pjsua2app.MyApp.cls_endpoint
-            ):
+            elif media_type == pj.PJMEDIA_TYPE_VIDEO and active:
                 try:
-                    if media_index == 0:
-                        self.local_video = self.getMedia(media_index)
-                        self.startVideoTransfer()
-                    elif media_index == 1:
-                        self.remote_video = self.getMedia(media_index)
-                        self.startVideoTransfer()
+                    self.video_window = pj.VideoWindow(
+                        media_info.getVideoIncomingWindowId()
+                    )
+                    self.video_prev = media_info.getVideoCapDev()
                 except Exception as e:
                     Logger.error(e.args)
-                    self.stopVideoTransfer()
 
     def startVideoTransfer(self):
         if self.local_video and self.remote_video:

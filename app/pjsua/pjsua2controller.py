@@ -3,11 +3,11 @@ Main Controller for this Application
 
 """
 
-import pjsua2 as pj
 from kivy.logger import Logger
 from pjsua.interfaces.endpointInterface import EndpointUtility
 from pjsua.interfaces.accountInterface import AccountUtility
 from pjsua.interfaces.callInterface import CallUtility
+from pjsua.pjsua2endpoint import Pjsua2Endpoint
 
 
 class AccountException(Exception):
@@ -41,15 +41,18 @@ class PJSUA2Controller:
         self.acc_util.create_account()
         self.call_util = CallUtility(self.acc_util.account)
 
+                
+
     def clean_up(self):
         """
         cleanup method:
             clean the pjsua2 memory
 
         """
-        self.ep.transportShutdown(self)
-        self.account.shutdown()
-        self.ep.libDestroy()
+        print(f"ENDPPOINT INSTANCE : {Pjsua2Endpoint.instance()}")
+        Pjsua2Endpoint.instance().transportShutdown(self)
+        self.acc_util.account.shutdown()
+        Pjsua2Endpoint.instance().libDestroy()
         self.print_pad("Application Shutdown's", prefix="#")
 
     def __enter__():
