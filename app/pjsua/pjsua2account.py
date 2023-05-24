@@ -1,9 +1,23 @@
 import pjsua2 as pj
 from pjsua.pjsua2call import Pjsua2Call
 from kivy.logger import Logger
-
-
+import time
 class Pjsua2Account(pj.Account):
+
+    """
+    please note current call in this context that points to incoming call.
+    Getting access on current incomming call instance
+
+    Note:
+        * 2 way's of accessing the current call instance using account class instance and using the class variable
+
+    way we accessing the current call instance:
+
+        using Static member's (or) using class Variable
+    """
+
+    incoming_call = None
+
     def __init__(self, callback=lambda: print("Inside Pjsua2Account .......")):
         pj.Account.__init__(self)
         self.callback = callback
@@ -63,8 +77,33 @@ class Pjsua2Account(pj.Account):
         # Handle media transport state event
 
     def onCallState(self, prm: pj.OnCallStateParam):
-        print("Call State:", prm)
-        # Handle call state event
+        try:
+            super(Pjsua2Call, self).onCallState(prm)
+            callinfo: pj.CallInfo = self.getInfo()
+            call_state = callinfo.state
+            call_id = callinfo.id
+            Logger.info(f"{'='*10} :: Call State In Account :: {'='*10}")
+            if call_state == pj.PJSIP_INV_STATE_CALLING:
+                self.start_time = time.time()
+            elif call_state in (
+                pj.PJSIP_INV_STATE_DISCONNECTED,
+                pj.PJSIP_INV_STATE_NULL,
+            ):
+                self.end_time = time.time()
+                duration = self.calculateDuration()
+                Logger.info(
+                    f"Call ID: {call_id}, Duration: {duration} seconds {duration/60}"
+                )
+            Logger.info(
+                f"""
+                       Call State :: \t {callinfo.state}
+                       Call Status Text :: \t {callinfo.stateText}
+                       Call Info  :: \t  {callinfo.remVideoCount}
+                        """
+            )
+            Logger.info("=" * 50)
+        except Exception as e:
+            Logger.error(e.args)
 
     def onCallMediaState(self, prm: pj.OnCallMediaStateParam):
         print("Call Media State:", prm)

@@ -1,6 +1,7 @@
 from kivy.app import App
 from threading import Thread
 from pjsua import pjsua2controller
+from kivy.logger import Logger
 
 
 class MyApp(App):

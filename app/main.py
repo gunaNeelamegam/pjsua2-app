@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     pjsua2_thread: Thread = Pjsua2Thread()
     my_app = pjsua2app.MyApp(pjsua2_thread)
-    endpoint: Endpoint = my_app.pjsua2_app.ep
+    endpoint: Endpoint = my_app.pjsua2_app.ep_util.ep
     pjsua2_thread.set_endpoint(endpoint)
     pjsua2app.MyApp.set_class_endpoint(endpoint)
     pjsua2_thread.start()

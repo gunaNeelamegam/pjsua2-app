@@ -18,6 +18,7 @@ class Pjsua2Call(pj.Call):
     Call Class
     """
 
+    Current_Call = None
     PjAudioMedia: pj.AudioMedia = None
     PjMediaPreview: pj.VideoPreview = None
     PjVideoWindow: pj.VideoWindow = None
@@ -77,7 +78,6 @@ class Pjsua2Call(pj.Call):
             media_type = media_info.type
             active = media_info.status == pj.PJSUA_CALL_MEDIA_ACTIVE
 
-            Logger.info(f"{pjsua2app.MyApp.cls_endpoint=}")
             if media_type == pj.PJMEDIA_TYPE_AUDIO and active:
                 try:
                     audio_media: pj.AudioMedia = self.getAudioMedia(med_idx=media_index)
