@@ -3,7 +3,6 @@ from threading import Thread
 from pjsua import pjsua2controller
 from pjsua2 import Endpoint
 
-
 class MyApp(App):
     cls_endpoint = None
 

@@ -8,6 +8,8 @@ from pjsua.interfaces.endpointInterface import EndpointUtility
 from pjsua.interfaces.accountInterface import AccountUtility
 from pjsua.interfaces.callInterface import CallUtility
 from pjsua.pjsua2endpoint import Pjsua2Endpoint
+from pjsua.interfaces.buddyInterface import BuddyUtility
+from kivy.clock import Clock
 
 
 class AccountException(Exception):
@@ -40,8 +42,11 @@ class PJSUA2Controller:
         self.acc_util.create_account_config()
         self.acc_util.create_account()
         self.call_util = CallUtility(self.acc_util.account)
-
-                
+        self.buddy_util = BuddyUtility(self.acc_util.account)
+        self.buddy_util.create_buddy_config()
+        self.buddy_util.create_buddy()
+        self.buddy_util.send_text_message({"message": "Hii Guna"})
+        # Clock.schedule_once(lambda *args:self.call_util.videoCall(), 10)
 
     def clean_up(self):
         """

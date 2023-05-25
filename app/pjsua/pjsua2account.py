@@ -24,7 +24,7 @@ class Pjsua2Account(pj.Account):
         pj.Account.__init__(self)
         self.callback = callback
 
-    async def onRegState(self, prm: pj.OnRegStateParam):
+    def onRegState(self, prm: pj.OnRegStateParam):
         """
         Note:
             registration code(int): success 200
