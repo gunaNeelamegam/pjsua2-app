@@ -15,9 +15,25 @@ import base64
 
 SOURCE_FILE_NAME = ""
 
+DEPS = [
+    "npm init -y",
+    "npm i --save asciidoctor @asciidoctor/reveal.js",
+]
+
 
 class RevealJsException(Exception):
     pass
+
+
+def install_script(command):
+    return run(command, shell=True, stderr=open(os.devnull))
+
+
+def install_deps():
+    """
+    Installation for building the reveal js presentation.
+    """
+    map(install_script, DEPS)
 
 
 def run_npx_with_asciidoc(source_filename="slides.adoc"):
