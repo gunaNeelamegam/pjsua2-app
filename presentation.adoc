@@ -1,0 +1,179 @@
+:icons: font
+:source-highlighter: highlightjs
+
+= Title Slide
+
+== Slide One
+
+* Foo
+* Bar
+* World
+
+== Slide Two
+
+A Great Story
+
+    void main(){
+        return 0;
+    }
+
+        fn rust(){
+            println!("Hello world");
+        }
+
+== Slide 3
+
+Slide 3
+
+=== Slide 3.1
+
+Slide 3.1
+
+
+[.columns]
+== 3 columns
+
+[.column]
+* Java
+* **Kotlin**
+
+[.column]
+* Node
+* **Deno**
+
+[.column]
+* Ruby
+* **Crystal**
+
+=== Notes 
+[.notes]
+* tell anecdote
+* make a point
+
+
+
+[.columns]
+== Column Text Alignment
+
+[.column.has-text-left]
+--
+Something Short
+
+Something So Long That We Need It Aligned
+--
+
+[.column.has-text-justified]
+--
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+Some thing ...
+--
+
+[.column.has-text-right]
+--
+Something Short
+
+Something So Long That We Need It Aligned
+
+image::background.jpg[]
+--
+
+
+[%notitle]
+== The Great Goat
+
+image::https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg[canvas,size=contain]
+
+[background-video="https://file-examples.com/storage/fe396452246495b989f22f7/2017/04/file_example_MP4_480_1_5MG.mp4",background-video-loop=true,background-video-muted=false]
+== Nice background!
+
+== Topic
+
+[.highlight-blue%step]
+blue
+
+[%step]
+white
+
+[.highlight-red%step]
+red
+
+=== Simple Steps
+
+* this
+* is
+* revealed
+* gradually
+
+== Topic
+
+[TIP,step=3]
+Finally, a pro tip...
+
+[WARNING,step=1]
+First, watch out for...
+
+[IMPORTANT.fade-up,step=2]
+Second, don't forget...
+
+=== Topic
+
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.
+
+=== Topic
+
+[%step]
+--
+.Greek Alphabet
+* α
+* β
+* γ
+--
+
+=== Topic
+
+[%step]
+--
+.First
+* a
+* b
+* c
+--
+
+[%step]
+--
+.Second
+[%step]
+* d
+* e
+* f
+--
+
+== But first
+
+[%step]
+--
+WARNING: This presentation is dangerous!
+
+FIXME: Just a Try
+--
+
+== Presentation Title
+
+
+=== Slide Five
+
+Uses highlighted code
+
+[source, python]
+----
+print("Hello World")
+----
+
+== Speaker View
+[.notes]
+--
+* tell anecdote
+* make a point
+--
