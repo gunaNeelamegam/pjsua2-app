@@ -1,0 +1,173 @@
+:icons: font
+:source-highlighter: highlightjs
+:title: mobile application crash
+= Esab IotNode Mobile Application Issue
+
+    - `**Guna.n**`
+
+== In iOS Device Application Crashes
+
+[.highlight-blue%step]
+* Why ?
+* When ?
+* How ?
+
+[.notes]
+--
+[%step]
+* react native
+* ui thread and main thread in kivy and kivy.clock module
+* iOS watch dog
+--
+
+== Break Down problem's
+
+[source,python]
+----
+from kivy.clock import mainthread
+
+
+@staticmethod
+@mainthread
+def show_popup(title: str, err_msg: str, buttons: Dict[str, str] = None):
+    """Displays a popup to show alert messages.
+
+    Args:
+        title: Popup title text
+        err_msg: Detailed error message
+        buttons: Mapping of button names to button text
+    """
+    # FIXME: Use List instead of dictionary to map
+    # button names to button text
+    alert = AlertPopup(title=title)
+
+----
+
+[.notes]
+--
+[%step]
+* sismic interpreter work's.
+* issue's when break down the interpreter into different thread.
+** event loop inside thread.
+*** kivy clock using scheduling execute callback method.
+* rpc while loop inside the future
+--
+
+== Reproducing issue with asynchronous programming context switching
+
+[.notes]
+--
+* async control flow
+* diff between async sleep and time sleep
+* event loop 
+--
+
+[source,python]
+----
+import asyncio
+
+value = 0
+
+
+async def task():
+    global value
+    tmp = value
+    await asyncio.sleep(0)
+    tmp = tmp + 1
+    await asyncio.sleep(0)
+    value = tmp
+    print(f"Value : {value}")
+
+
+async def main():
+    global value
+    value = 0
+    coros = [task() for _ in range(10000)]
+    await asyncio.gather(*coros)
+    print(value)
+
+
+asyncio.run(main())
+----
+
+
+== Mutex Lock for WebSocket Client Connection.
+[source,python]
+----
+
+Task:: self._try_conn_task = asyncio.ensure_future(self.try_connect(retry_period))
+
+**Mutex Lock**
+
+    ```python
+    async def _validate_and_reinit_client(self):
+        if self._ws_lock == None:
+            self._ws_lock = Lock()
+        async with self._ws_lock:
+            try:
+                is_valid = self._is_valid_client()
+                if not is_valid:
+                    await self._close_nolock()
+                    return await self._init_and_connect_client()
+
+                return True
+            except RuntimeError as error:
+                Logger.error(error.args)
+        ```
+
+
+
+ async def _init_and_connect_client(self):
+        url = self._get_url()
+        if not url:
+            await self._close_nolock()
+            return False
+
+        self._session = aiohttp.ClientSession(timeout=self.CONN_TIMEOUT)
+        self._ws_client = Server(url, session=self._session, timeout=self.RESP_TIMEOUT)
+
+        try:
+            await self._ws_client.ws_connect()
+        except (ProtocolError, TransportError, ConnectionError) as exc:
+            await self._close_nolock()
+            return False
+        return self._ws_client.connected
+----
+
+[.notes]
+--
+* Connection exception's when calling connect  method inplace inside websocket instance.
+* mutex lock
+--
+
+[%notitle]
+=== 
+
+[source,python]
+----
+import asyncio
+
+value =0
+
+async def task(lock):
+    async with lock:
+        global value
+        tmp = value
+        await asyncio.sleep(0)
+        tmp = tmp + 1
+        await asyncio.sleep(0)
+        value = tmp
+
+
+async def main():
+    global value
+    value = 0
+    lock = asyncio.Lock()
+    coros = [task(lock) for _ in range(10000)]
+    await asyncio.gather(*coros)
+    print(value)
+
+
+asyncio.run(main())
+----
+== Thank you U+1F600
