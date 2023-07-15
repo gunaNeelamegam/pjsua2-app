@@ -50,14 +50,12 @@ docker run -it --name pjsua2-builder -v $(pwd):/test gunaneelamegam/pjsua2 /bin/
 ```bash
 * After executing the previous command in you terminal you able to move inside the container.
 
-* you mounted inside the /test folder which you mapped when execute the run command.
+* you mounted inside the /app folder which you mapped when execute the run command.
 
-* cd /app
 
 NOTE:
     * what ever you need from this container you need to move to the mapped directory.
 
-    cd /app
     cp -r ./pjsua2 /test
     cp -r ./pjproject-2.12 /test
     cp -r ./lib /test

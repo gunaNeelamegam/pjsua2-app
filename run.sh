@@ -60,7 +60,8 @@ make
 python3 setup.py install
 cp -r /usr/local/lib /app
 cp -r /tmp/app/pjproject-2.12 /app
-cd /usr/lib/python3/dist-packages/
-cp -r . pjsua2
+cp -r /usr/local/lib/python3.8/dist-packages/ pjsua2
 cp -r pjsua2 /app
-rm -rf /tmp
+rm -rf /tmp/pjproject-2.12
+rm -rf /tmp/portaudio
+rm -rf /tmp/openh264
