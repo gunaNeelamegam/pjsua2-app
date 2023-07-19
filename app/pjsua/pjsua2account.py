@@ -20,9 +20,16 @@ class Pjsua2Account(pj.Account):
 
     incoming_call: Pjsua2Call = None
 
-    def __init__(self, callback=lambda: print("Inside Pjsua2Account .......")):
+    def __init__(self):
         pj.Account.__init__(self)
-        self.callback = callback
+        self.callbacks = {
+            "on_incomingcall": None,
+            "on_register": None,
+            "on_message": None,
+            "on_message_status": None,
+            "on_typing_indication": None,
+            "on_callstate_change": None,
+        }
 
     def onRegState(self, prm: pj.OnRegStateParam):
         """
@@ -45,6 +52,8 @@ class Pjsua2Account(pj.Account):
             Registaration Whole Message \t ::  {rData.wholeMsg}
             """
         )
+        if Cb := self.callbacks.get("on_register"):
+            Cb(prm)
         Logger.info("*" * 50)
 
     def onIncomingCall(self, prm: pj.OnIncomingCallParam):
@@ -60,6 +69,8 @@ class Pjsua2Account(pj.Account):
         call_prm: pj.CallOpParam = pj.CallOpParam(True)
         call_prm.statusCode = pj.PJSIP_SC_OK
         self.current_call.answer(call_prm)
+        if Cb := self.callbacks.get("on_incomingcall"):
+            Cb(call_prm, self.current_call)
         Logger.info(f"{'=' * 100}")
 
     def onInstantMessage(self, prm: pj.OnInstantMessageStatusParam):
@@ -123,5 +134,3 @@ class Pjsua2Account(pj.Account):
             Logger.info("=" * 50)
         except Exception as e:
             Logger.error(e.args)
-
-   

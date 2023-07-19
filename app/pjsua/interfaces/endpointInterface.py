@@ -3,6 +3,7 @@ from pjsua.pjsua2endpoint import Pjsua2Endpoint
 from kivy.logger import Logger
 from utils.config import load_to_instance
 
+
 class EndpointUtility:
     """
     EndpointUtility Class consist of all the utility methods in pjsuaEndpoint Class
@@ -12,7 +13,7 @@ class EndpointUtility:
         return Logger.info(f"{prefix*50} \n \n{message}\n \n {prefix*50}")
 
     def __init__(self) -> None:
-        load_to_instance("config.yaml",self)
+        load_to_instance("config.yaml", self)
         self.ep = Pjsua2Endpoint()
         self.ep_cfg: pj.EpConfig = pj.EpConfig()
 
@@ -55,7 +56,6 @@ class EndpointUtility:
             self.ep.transportCreate(pj.PJSIP_TRANSPORT_UDP, self.sipTpConfig)
             self.ep.transportCreate(pj.PJSIP_TRANSPORT_UDP6, self.sipTpConfig)
             self.ep.transportCreate(pj.PJSIP_TRANSPORT_TCP, self.sipTpConfig)
-            self.ep.transportCreate(3, self.sipTpConfig)
             self.ep.libStart()
 
         except Exception as e:

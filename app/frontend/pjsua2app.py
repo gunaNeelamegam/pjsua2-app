@@ -2,6 +2,29 @@ from kivy.app import App
 from threading import Thread
 from pjsua import pjsua2controller
 from pjsua2 import Endpoint
+import os
+
+
+from kivy.uix.gridlayout import GridLayout
+
+from kivy.uix.label import Label
+
+from kivy.uix.textinput import TextInput
+
+
+class LoginScreen(GridLayout):
+    def __init__(self, **var_args):
+        super(LoginScreen, self).__init__(**var_args)
+        self.add_widget(Label(text="User Name"))
+        self.username = TextInput(multiline=True)
+
+        self.add_widget(self.username)
+        self.add_widget(Label(text="password"))
+        self.password = TextInput(password=True, multiline=False)
+
+        self.add_widget(Label(text="Comfirm password"))
+        self.password = TextInput(password=True, multiline=False)
+        self.add_widget(self.password)
 
 
 class MyApp(App):
@@ -16,9 +39,13 @@ class MyApp(App):
     """
 
     def __init__(self, pjsua2_thread: Thread, file_name: str = ""):
-        super(MyApp, self).__init__()
         self.pjsua2_app = pjsua2controller.PJSUA2Controller()
         self.pjsua2_thread = pjsua2_thread
+        super.__init__()
+
+    def build(self):
+        print("inside Build")
+        return LoginScreen()
 
     def on_stop(self):
         """
@@ -34,4 +61,4 @@ class MyApp(App):
         return None
 
     def get_endpoint(self) -> Endpoint:
-        return self.pjsua2_app.ep_util.ep
+        return Endpoint.instance()

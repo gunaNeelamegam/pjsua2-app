@@ -4,7 +4,6 @@ import pjsua2app
 from threading import Thread
 
 if __name__ == "__main__":
-
     pjsua2_thread: Thread = Pjsua2Thread()
     my_app = pjsua2app.MyApp(pjsua2_thread)
     endpoint: Endpoint = my_app.get_endpoint()

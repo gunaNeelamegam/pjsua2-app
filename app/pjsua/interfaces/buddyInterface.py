@@ -19,6 +19,7 @@ class BuddyUtility:
         buddy_config.subscribe = True
         buddy_config.uri = f"sip:6001@{self.ip}"
         return buddy_config
+
     def create_buddy(self):
         """_summary_
         Create Buddy (or) Contacts based on your account.
@@ -43,7 +44,7 @@ class BuddyUtility:
             message_info: pj.SendInstantMessageParam = pj.SendInstantMessageParam()
             message_info.contentType = "text/plain"
             message_info.content = options.get("message")
-            message_info.userData = True
+            # message_info.userData = True
             self.buddy.sendInstantMessage(message_info)
             return True
         except Exception as e:

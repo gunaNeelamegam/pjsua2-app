@@ -38,7 +38,7 @@ class PJSUA2Controller:
         self.ep_util = EndpointUtility()
         self.ep_util.init_endpoint()
         self.ep_util.init_transport()
-        self.acc_util = AccountUtility()
+        self.acc_util = AccountUtility(6002, 0, ip="172.16.1.93", password="1234")
         self.acc_util.create_account_config()
         self.acc_util.create_account()
         self.call_util = CallUtility(self.acc_util.account)
