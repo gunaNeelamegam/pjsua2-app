@@ -53,7 +53,7 @@ class Pjsua2Account(pj.Account):
             """
         )
         if Cb := self.callbacks.get("on_register"):
-            Cb(prm)
+            Cb(self, prm)
         Logger.info("*" * 50)
 
     def onIncomingCall(self, prm: pj.OnIncomingCallParam):
@@ -70,7 +70,7 @@ class Pjsua2Account(pj.Account):
         call_prm.statusCode = pj.PJSIP_SC_OK
         self.current_call.answer(call_prm)
         if Cb := self.callbacks.get("on_incomingcall"):
-            Cb(call_prm, self.current_call)
+            Cb(self, call_prm, self.current_call)
         Logger.info(f"{'=' * 100}")
 
     def onInstantMessage(self, prm: pj.OnInstantMessageStatusParam):
